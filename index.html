@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P4J∆R — Muhammad Fajar / File Pribadi</title>
+<meta name="description" content="Portofolio pribadi Muhammad Fajar (P4J∆R) — pelajar yang belajar software development, cybersecurity, dan AI engineering. Arsip proyek, catatan, dan eksperimen.">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="canonical" href="https://p4jar.vercel.app/">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="P4J∆R — Muhammad Fajar">
+<meta property="og:description" content="Pelajar. Belajar software development, cybersecurity, dan AI engineering pelan-pelan.">
+<meta property="og:url" content="https://p4jar.vercel.app/">
+<meta property="og:locale" content="id_ID">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P4J∆R — Muhammad Fajar">
+<meta name="twitter:description" content="Pelajar. Belajar software development, cybersecurity, dan AI engineering pelan-pelan.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/loader.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/marquee.css">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/projects.css">
+<link rel="stylesheet" href="css/bio.css">
+<link rel="stylesheet" href="css/timeline.css">
+<link rel="stylesheet" href="css/stack.css">
+<link rel="stylesheet" href="css/lab.css">
+<link rel="stylesheet" href="css/contact.css">
+<link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="is-loading">
+
+<div id="loader" aria-hidden="true">
+  <div class="loader-mark mono">F</div>
+  <p class="loader-word">P4J∆R</p>
+  <p class="loader-status mono" id="loader-status">INITIALIZING...</p>
+  <div class="loader-bar"></div>
+</div>
+
+<div class="noise" aria-hidden="true"></div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a href="#top" class="brand" aria-label="P4J∆R — beranda">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 3H18V6H8V11H16V14H8V21H4V3Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-name">P4J∆R</span>
+    </a>
+    <div class="header-meta">
+      <span class="dot" aria-hidden="true"></span>
+      <time id="header-date" class="mono">--</time>
+      <span class="meta-sep">/</span>
+      <span class="mono">WIB</span>
+
+      <div class="nav-menu">
+        <button type="button" id="nav-toggle" class="nav-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Buka menu navigasi">⋮</button>
+        <nav id="nav-dropdown" class="nav-dropdown" hidden>
+          <a href="#top" data-nav>INDEX</a>
+          <a href="#work" data-nav>WORK / PROJECT</a>
+          <a href="#about" data-nav>STORY</a>
+          <a href="#timeline" data-nav>PATH</a>
+          <a href="#stack" data-nav>STACK</a>
+          <a href="#lab" data-nav>AI</a>
+          <a href="#contact" data-nav>CONTACT</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <p class="eyebrow mono"><span class="eyebrow-tag">FILE 001</span><span class="eyebrow-status">— OPEN</span></p>
+
+      <h1 class="hero-title">
+        <span class="line hero-title-a">MUHAMMAD</span>
+        <span class="line hero-title-b">FAJAR</span>
+      </h1>
+
+      <p class="hero-lede">
+        Saya bukan fullstack developer. Saya masih awam. Saya cuma nyoba-nyoba, belajar pelan-pelan, dan terus bikin hal baru.
+      </p>
+
+      <p class="current-line mono" aria-live="polite">
+        <span class="current-line-caret" aria-hidden="true">&gt;</span>
+        <span id="current-line-text">membaca dokumentasi...</span><span class="caret-blink" aria-hidden="true">_</span>
+      </p>
+
+      <div class="hero-actions">
+        <a href="#work" class="btn btn-solid">VIEW WORK</a>
+        <a href="#contact" class="btn btn-outline">GET IN TOUCH</a>
+        <a href="https://github.com/pajarr10" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.79-.25.79-.55v-2.1c-3.2.7-3.87-1.35-3.87-1.35-.53-1.32-1.28-1.67-1.28-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.82 1.18 3.08 0 4.41-2.7 5.38-5.27 5.67.42.36.78 1.07.78 2.16v3.2c0 .31.21.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+          @pajarr10
+        </a>
+      </div>
+
+      <div class="hero-grid">
+        <dl class="meta-panel" aria-label="Data profil">
+          <div class="meta-row"><dt class="mono">NAME</dt><dd>MUHAMMAD FAJAR</dd></div>
+          <div class="meta-row"><dt class="mono">AGE</dt><dd>14</dd></div>
+          <div class="meta-row"><dt class="mono">HANDLE</dt><dd>@P4J∆R</dd></div>
+          <div class="meta-row"><dt class="mono">CITY</dt><dd>IDN / WIB</dd></div>
+          <div class="meta-row"><dt class="mono">BORN</dt><dd>21/04/2012</dd></div>
+          <div class="meta-row"><dt class="mono">STAGE</dt><dd>LEARNING</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE TOP -->
+  <div class="marquee marquee-top" aria-hidden="true">
+    <div class="marquee-row">
+      <div class="marquee-track">
+        <span>EST.2012 — OPEN SOURCE — INDONESIA — LEARNING — P4J∆R — </span>
+        <span>EST.2012 — OPEN SOURCE — INDONESIA — LEARNING — P4J∆R — </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head" data-animate="fade-up">
+        <p class="section-tag mono">002 — SELECTED WORK</p>
+        <h2 class="section-title">PROJECTS, <span class="dim">ON REEL</span></h2>
+        <p class="section-sub">Curated works, tools, and experiments.</p>
+      </div>
+
+      <div class="carousel" id="project-carousel">
+        <div class="carousel-track" id="project-grid">
+
+        <article class="project-card" style="--tilt: -1deg;">
+          <a class="project-thumb" href="https://pixajar.my.id" target="_blank" rel="noopener noreferrer" aria-label="Buka Portofolio Fotografi">
+            <img src="https://c.termai.cc/i122/5qj8co.png" alt="Cuplikan Portofolio Fotografi" loading="lazy" onerror="this.closest('.project-thumb').classList.add('thumb-fallback')">
+          </a>
+          <div class="project-body">
+            <p class="project-index mono">01 / 06</p>
+            <h3 class="project-name">Portofolio Fotografi</h3>
+            <p class="project-desc">Situs galeri foto pribadi, disusun sederhana dan ringan.</p>
+            <a class="project-open mono" href="https://pixajar.my.id" target="_blank" rel="noopener noreferrer">OPEN →</a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--tilt: 1deg;">
+          <a class="project-thumb" href="https://ai.sylent.biz.id" target="_blank" rel="noopener noreferrer" aria-label="Buka AI bertenaga Claude">
+            <img src="https://c.termai.cc/i130/3xk2uH0.png" alt="Cuplikan AI bertenaga Claude" loading="lazy" onerror="this.closest('.project-thumb').classList.add('thumb-fallback')">
+          </a>
+          <div class="project-body">
+            <p class="project-index mono">02 / 06</p>
+            <h3 class="project-name">AI bertenaga Claude</h3>
+            <p class="project-desc">Antarmuka chat sederhana yang memanggil model Claude.</p>
+            <a class="project-open mono" href="https://ai.sylent.biz.id" target="_blank" rel="noopener noreferrer">OPEN →</a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--tilt: -0.6deg;">
+          <a class="project-thumb" href="https://useragenttt.vercel.app" target="_blank" rel="noopener noreferrer" aria-label="Buka Generate Useragent">
+            <img src="https://c.termai.cc/i107/GjoO.png" alt="Cuplikan Generate Useragent" loading="lazy" onerror="this.closest('.project-thumb').classList.add('thumb-fallback')">
+          </a>
+          <div class="project-body">
+            <p class="project-index mono">03 / 06</p>
+            <h3 class="project-name">Generate Useragent</h3>
+            <p class="project-desc">Utilitas kecil untuk membuat string user-agent acak.</p>
+            <a class="project-open mono" href="https://useragenttt.vercel.app" target="_blank" rel="noopener noreferrer">OPEN →</a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--tilt: 0.8deg;">
+          <a class="project-thumb" href="https://github.com/pajarr10/DoSJar" target="_blank" rel="noopener noreferrer" aria-label="Buka repositori DoS Tools Education">
+            <img src="https://c.termai.cc/i107/GjoO.png" alt="Cuplikan repositori DoS Tools" loading="lazy" onerror="this.closest('.project-thumb').classList.add('thumb-fallback')">
+          </a>
+          <div class="project-body">
+            <p class="project-index mono">04 / 06</p>
+            <h3 class="project-name">DoS Tools (Education)</h3>
+            <p class="project-desc">Repositori catatan belajar tentang stress-testing jaringan.</p>
+            <a class="project-open mono" href="https://github.com/pajarr10/DoSJar" target="_blank" rel="noopener noreferrer">OPEN →</a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--tilt: -1.2deg;">
+          <a class="project-thumb" href="https://pajarngodink.my.id" target="_blank" rel="noopener noreferrer" aria-label="Buka AI bertenaga DeepSeek">
+            <img src="https://c.termai.cc/i148/K7vk5T.png" alt="Cuplikan AI bertenaga DeepSeek" loading="lazy" onerror="this.closest('.project-thumb').classList.add('thumb-fallback')">
+          </a>
+          <div class="project-body">
+            <p class="project-index mono">05 / 06</p>
+            <h3 class="project-name">AI bertenaga DeepSeek</h3>
+            <p class="project-desc">Percobaan integrasi model DeepSeek untuk chat ringan.</p>
+            <a class="project-open mono" href="https://pajarngodink.my.id" target="_blank" rel="noopener noreferrer">OPEN →</a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--tilt: 0.5deg;">
+          <a class="project-thumb" href="https://cookora.web.id" target="_blank" rel="noopener noreferrer" aria-label="Buka Search">
+            <img src="https://c.termai.cc/i140/6dRX.png" alt="Cuplikan aplikasi Search" loading="lazy" onerror="this.closest('.project-thumb').classList.add('thumb-fallback')">
+          </a>
+          <div class="project-body">
+            <p class="project-index mono">06 / 06</p>
+            <h3 class="project-name">Search</h3>
+            <p class="project-desc">Mesin pencari kecil, dibangun untuk latihan indexing.</p>
+            <a class="project-open mono" href="https://cookora.web.id" target="_blank" rel="noopener noreferrer">OPEN →</a>
+          </div>
+        </article>
+
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE BOTTOM (double, opposite directions) -->
+  <div class="marquee marquee-bottom" aria-hidden="true">
+    <div class="marquee-row">
+      <div class="marquee-track">
+        <span>PYTHON — JAVASCRIPT — HTML — CSS — GITHUB — NODE — SQLITE — REACT — </span>
+        <span>PYTHON — JAVASCRIPT — HTML — CSS — GITHUB — NODE — SQLITE — REACT — </span>
+      </div>
+    </div>
+    <div class="marquee-row">
+      <div class="marquee-track marquee-reverse">
+        <span>PYTHON — JAVASCRIPT — HTML — CSS — GITHUB — NODE — SQLITE — REACT — </span>
+        <span>PYTHON — JAVASCRIPT — HTML — CSS — GITHUB — NODE — SQLITE — REACT — </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIOGRAPHY -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-head" data-animate="fade-up">
+        <p class="section-tag mono">003 — SELF / BIOGRAPHY</p>
+        <h2 class="section-title">A SHORT <span class="dim">ELEGY</span></h2>
+      </div>
+
+      <div class="bio-layout">
+        <div class="bio-card" id="bio-card" data-animate="scale">
+          <div class="bio-card-inner">
+            <img class="bio-photo" src="https://c.termai.cc/i144/IW17geI.png" alt="Potret Muhammad Fajar" loading="lazy">
+            <p class="bio-card-tag mono">ARTIFACT / 2·1</p>
+          </div>
+        </div>
+
+        <div class="bio-content" data-animate="slide-left">
+          <h3 class="bio-title">Saya Bukan <span class="dim">[Full-Stack]</span> Developer, Bukan Juga Seorang Ahli.</h3>
+          <p class="bio-text">Saya hanyalah seorang pelajar yang memiliki rasa ingin tahu yang besar terhadap dunia teknologi. Saya tertarik pada software development, cybersecurity, dan artificial intelligence. Bagi saya, setiap project adalah kesempatan untuk belajar, bereksperimen, dan terus mengembangkan kemampuan. Saya percaya bahwa proses belajar tidak pernah berhenti, dan dengan konsistensi, rasa ingin tahu, serta kemauan untuk terus berkembang, saya ingin menciptakan sesuatu yang bermanfaat melalui teknologi.</p>
+
+          <dl class="bio-meta">
+            <div><dt class="mono">BORN</dt><dd>21 / 04 / 2012</dd></div>
+            <div><dt class="mono">AGE</dt><dd>14</dd></div>
+            <div><dt class="mono">CITY</dt><dd>INDONESIA</dd></div>
+            <div><dt class="mono">POSTURE</dt><dd>LEARNING</dd></div>
+          </dl>
+
+          <ul class="bio-habits mono">
+            <li>— Reading books</li>
+            <li>— Writing notes and small software</li>
+            <li>— Counting, by hand, slowly</li>
+          </ul>
+        </div>
+      </div>
+
+      <blockquote class="pull-quote">
+        <p>“Belajar dan menulis tanpa suara besar, dan tetap hidup di antara baris kode.”</p>
+        <cite class="mono">— P4J∆R / 2026</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section" id="timeline">
+    <div class="wrap">
+      <div class="section-head" data-animate="fade-up">
+        <p class="section-tag mono">004 — TIMELINE</p>
+        <h2 class="section-title">A LINE, <span class="dim">DRAWN</span></h2>
+      </div>
+
+      <ol class="timeline">
+        <li class="timeline-item reveal">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <p class="timeline-index mono">X / 01 — 2025—2026</p>
+          <h3 class="timeline-name">Gray Hat Hacker</h3>
+          <p class="timeline-note">A chapter best left unread. Do not imitate.</p>
+          <span class="timeline-label mono">[SCRIPT KIDDIE wkwk]</span>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <p class="timeline-index mono">X / 02 — 2025—2026</p>
+          <h3 class="timeline-name">VIBECODER</h3>
+          <p class="timeline-note">Defensive posture, careful disclosure, public learning.</p>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <p class="timeline-index mono">X / 03 — 2026</p>
+          <h3 class="timeline-name">Prompt Engineering</h3>
+          <p class="timeline-note">Composing language for machines to behave with care.</p>
+        </li>
+        <li class="timeline-item reveal">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <p class="timeline-index mono">X / 04 — 2026</p>
+          <h3 class="timeline-name">AI Engineering</h3>
+          <p class="timeline-note">Small models, local tools, tight loops, honest failures.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="section" id="stack">
+    <div class="wrap">
+      <div class="section-head" data-animate="fade-up">
+        <p class="section-tag mono">005 — WHAT I LEARN</p>
+        <h2 class="section-title">THE <span class="dim">STACK</span></h2>
+        <p class="section-sub mono">08 ITEMS / SELF-ASSESSED.</p>
+      </div>
+
+      <ul class="skill-list">
+        <li class="skill-row reveal"><span class="skill-index mono">01</span><span class="skill-name">Python</span><span class="skill-meter" style="--v:50%"></span><span class="skill-val mono">LV 50</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">02</span><span class="skill-name">JavaScript</span><span class="skill-meter" style="--v:43%"></span><span class="skill-val mono">LV 43</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">03</span><span class="skill-name">Node.js</span><span class="skill-meter" style="--v:43%"></span><span class="skill-val mono">LV 43</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">04</span><span class="skill-name">NPM</span><span class="skill-meter" style="--v:40%"></span><span class="skill-val mono">LV 40</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">05</span><span class="skill-name">CSS</span><span class="skill-meter" style="--v:12%"></span><span class="skill-val mono">LV 12</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">06</span><span class="skill-name">SQLite</span><span class="skill-meter" style="--v:45%"></span><span class="skill-val mono">LV 45</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">07</span><span class="skill-name">Git &amp; GitHub</span><span class="skill-meter" style="--v:76%"></span><span class="skill-val mono">LV 76</span></li>
+        <li class="skill-row reveal"><span class="skill-index mono">08</span><span class="skill-name">React</span><span class="skill-meter" style="--v:30%"></span><span class="skill-val mono">LV 30</span></li>
+      </ul>
+
+      <div class="cert-note">
+        <p class="cert-title mono">CERTIFICATES — NONE :)</p>
+        <p class="cert-text">Tidak ada sertifikat. Hanya catatan, kode sumber yang berjalan, dan rasa ingin tahu yang tidak pernah padam.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI LAB -->
+  <section class="section" id="lab">
+    <div class="wrap">
+      <div class="section-head" data-animate="fade-up">
+        <p class="section-tag mono">006 — AI</p>
+        <h2 class="section-title">MUTASI <span class="dim">LAB CHAT</span></h2>
+        <p class="section-sub">Ruang kecil untuk mencoba model bahasa. Bukan produk, cuma lab.</p>
+      </div>
+
+      <div class="lab-panel" data-animate="blur">
+        <div class="lab-panel-head">
+          <span class="lab-dot" aria-hidden="true"></span>
+          <span class="mono">lab://mutasi</span>
+          <button type="button" id="chat-clear" class="lab-clear mono">CLEAR</button>
+        </div>
+
+        <div id="chat-log" class="lab-log" role="log" aria-live="polite">
+          <div class="chat-msg chat-sys">
+            <p class="mono chat-role">SYSTEM</p>
+            <p class="chat-text">Lab siap. Tulis apa saja — pertanyaan, ide, atau sekadar sapaan.</p>
+          </div>
+        </div>
+
+        <form id="chat-form" class="lab-input-row">
+          <label for="chat-input" class="sr-only">Tulis pesan</label>
+          <input id="chat-input" class="mono" type="text" placeholder="ketik sesuatu..." autocomplete="off" required>
+          <button type="submit" class="btn btn-solid" id="chat-send">SEND</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head" data-animate="fade-up">
+        <p class="section-tag mono">007 — CONTACT</p>
+        <h2 class="section-title">SAY <span class="dim">HELLO.</span></h2>
+        <p class="section-sub">Saya tidak fast response. Tapi saya pasti membaca.<br>Untuk kolaborasi, pesanan, atau hanya ingin bertukar catatan, silakan hubungi melalui salah satu kanal di bawah. Setiap pesan adalah berkas yang berharga.</p>
+      </div>
+
+      <div class="contact-actions">
+        <a class="btn btn-solid" href="https://saweria.co/pajardong" target="_blank" rel="noopener noreferrer">DONATE</a>
+        <a class="btn btn-outline" href="https://github.com/pajarr10" target="_blank" rel="noopener noreferrer">GITHUB</a>
+      </div>
+
+      <ul class="contact-list" data-animate="fade-up">
+        <li class="contact-row">
+          <span class="contact-index mono">01</span>
+          <span class="contact-name">WhatsApp</span>
+          <a class="contact-link mono" href="https://wa.me/6285708557587" target="_blank" rel="noopener noreferrer">+62 857-0855-7587</a>
+          <span class="contact-open mono">Open</span>
+        </li>
+        <li class="contact-row">
+          <span class="contact-index mono">02</span>
+          <span class="contact-name">GitHub</span>
+          <a class="contact-link mono" href="https://github.com/pajarr10" target="_blank" rel="noopener noreferrer">pajarr10</a>
+          <span class="contact-open mono">Open</span>
+        </li>
+        <li class="contact-row">
+          <span class="contact-index mono">03</span>
+          <span class="contact-name">Telegram</span>
+          <a class="contact-link mono" href="https://t.me/JarzGoslingF" target="_blank" rel="noopener noreferrer">t.me/JarzGoslingF</a>
+          <span class="contact-open mono">Open</span>
+        </li>
+        <li class="contact-row">
+          <span class="contact-index mono">04</span>
+          <span class="contact-name">Saweria</span>
+          <a class="contact-link mono" href="https://saweria.co/pajardong" target="_blank" rel="noopener noreferrer">pajardong</a>
+          <span class="contact-open mono">Open</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-col">
+      <p class="mono footer-label">COLOPHON</p>
+      <p class="footer-text">Dibuat dengan HTML, CSS, dan JavaScript murni — tanpa framework, tanpa noise berlebih.</p>
+    </div>
+    <div class="footer-col">
+      <p class="mono footer-label">BUILD</p>
+      <p class="footer-text mono">v1.0 / P4J∆R<br>STATIC / VANILLA</p>
+    </div>
+    <div class="footer-col">
+      <p class="mono footer-label">SYSTEM CLOCK</p>
+      <p class="footer-text mono" id="footer-clock">--:--:--</p>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <p class="mono">© MUHAMMAD FAJAR / 2026 / IDN</p>
+  </div>
+</footer>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
