@@ -1,1 +1,102 @@
+/* =========================================================
+   P4J∆R — PORTFOLIO STYLESHEET
+   Dark / editorial / archive aesthetic. Vanilla CSS.
+   ========================================================= */
 
+:root{
+  --bg:#0a0a0b;
+  --bg-raised:#111113;
+  --panel:#141416;
+  --line:rgba(236,236,236,.10);
+  --line-strong:rgba(236,236,236,.20);
+  --text:#ECECEC;
+  --text-soft:#EAEAEA;
+  --text-mid:#9E9E9E;
+  --text-dim:#96969b;
+  --text-faint:#5c5c61;
+  --accent:#e7b34d;
+  --stack-bar:#ECECEC;
+  --signal:#7fdc8f;
+  --danger:#ff6b5e;
+
+  --radius-sm:2px;
+  --radius-md:4px;
+
+  --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --display:'Archivo Black', 'Arial Black', sans-serif;
+  --body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --dur-fast:.3s;
+  --dur:.3s;
+  --dur-slow:.6s;
+  --ease:cubic-bezier(.22,.68,0,1);
+
+  --wrap:1180px;
+  --gutter:clamp(20px, 5vw, 64px);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+ul,ol{list-style:none; margin:0; padding:0;}
+dl,dt,dd{margin:0;}
+button{font:inherit; color:inherit; background:none; border:none; cursor:pointer;}
+input{font:inherit; color:inherit;}
+
+.mono{font-family:var(--mono);}
+.dim{color:var(--text-dim);}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;}
+
+.skip-link{
+  position:absolute; left:-999px; top:0; z-index:200;
+  background:var(--accent); color:#0a0a0b; padding:10px 16px; font-family:var(--mono);
+}
+.skip-link:focus{left:12px; top:12px;}
+
+::selection{background:var(--accent); color:#0a0a0b;}
+
+/* scrollbar */
+::-webkit-scrollbar{width:10px; height:10px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--line-strong); border-radius:8px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint);}
+
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+.wrap{
+  max-width:var(--wrap);
+  margin-inline:auto;
+  padding-inline:var(--gutter);
+}
+
+/* background texture */
+.noise{
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.035; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grid-overlay{
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background-image:linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 0%, black, transparent 75%);
+  opacity:.15;
+}
+
+main, header, footer{position:relative; z-index:1;}

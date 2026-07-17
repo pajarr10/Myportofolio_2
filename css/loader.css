@@ -1,0 +1,37 @@
+/* ---------- LOADING SCREEN ---------- */
+#loader{
+  position:fixed; inset:0; z-index:9999;
+  background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+#loader.loader-hidden{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+.loader-mark{
+  width:44px; height:44px; display:grid; place-items:center;
+  border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  font-family:var(--display); font-size:22px; color:var(--text-soft);
+}
+.loader-word{
+  font-family:var(--mono); font-size:14px; letter-spacing:.18em; color:var(--text);
+}
+.loader-status{
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--text-faint);
+}
+.loader-bar{
+  width:140px; height:2px; background:var(--line); border-radius:2px; overflow:hidden;
+}
+.loader-bar::after{
+  content:""; display:block; height:100%; width:40%; background:var(--text-soft);
+  animation:loaderSweep 1s ease-in-out infinite;
+}
+@keyframes loaderSweep{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(350%);}
+}
+body.is-loading{overflow:hidden;}
+
+@media (prefers-reduced-motion: reduce){
+  .loader-bar::after{animation:none; width:100%;}
+}

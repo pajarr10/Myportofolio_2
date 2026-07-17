@@ -1,0 +1,36 @@
+/* ---------- REVEAL (generic + variants) ---------- */
+.reveal, [data-animate]{
+  opacity:0;
+  transition:opacity .7s var(--ease), transform .7s var(--ease), filter .7s var(--ease);
+  will-change:opacity, transform;
+}
+.reveal.in-view, [data-animate].in-view{
+  opacity:1; transform:none; filter:none;
+}
+
+/* default = fade-up */
+.reveal,
+[data-animate="fade-up"]{ transform:translateY(16px); }
+
+[data-animate="fade"]{ transform:none; }
+
+[data-animate="slide-left"]{ transform:translateX(-24px); }
+[data-animate="slide-right"]{ transform:translateX(24px); }
+
+[data-animate="scale"]{ transform:scale(.94); }
+
+[data-animate="blur"]{
+  transform:translateY(10px);
+  filter:blur(8px);
+}
+
+/* stagger helper: children get incremental delay via inline style --d */
+[data-animate]{ transition-delay:var(--d, 0ms); }
+
+.timeline-item, .skill-row{
+  transition-duration:.6s;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal, [data-animate]{ transition:none !important; opacity:1 !important; transform:none !important; filter:none !important; }
+}

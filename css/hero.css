@@ -1,0 +1,56 @@
+/* ---------- HERO ---------- */
+.hero{padding:64px 0 56px;}
+.eyebrow{
+  display:flex; gap:10px; align-items:center; font-size:13px;
+  color:var(--text-dim); margin:0 0 20px;
+}
+.eyebrow-tag{
+  border:1px solid var(--line-strong); padding:3px 8px; border-radius:var(--radius-sm);
+  color:var(--text);
+}
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(56px, 13vw, 148px);
+  line-height:.92;
+  letter-spacing:-.01em;
+  margin:0 0 28px;
+  text-transform:uppercase;
+}
+.hero-title .line{display:block;}
+.hero-title-a{color:var(--text-soft);}
+.hero-title-b{color:var(--text-mid);}
+.hero-lede{
+  max-width:640px; font-size:clamp(17px,2.6vw,20.5px); color:var(--text-dim);
+  margin:0 0 18px;
+}
+.current-line{
+  font-size:13px; color:var(--text-faint); margin:0 0 32px;
+  display:flex; gap:8px; align-items:baseline; min-height:20px;
+}
+.current-line-caret{color:var(--accent);}
+.caret-blink{animation:blink 1s step-end infinite; color:var(--accent);}
+@keyframes blink{50%{opacity:0;}}
+
+.hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:48px;}
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 22px; font-family:var(--mono); font-size:13px; letter-spacing:.04em;
+  border-radius:var(--radius-sm); border:1px solid var(--line-strong);
+  transition:transform var(--dur-fast) var(--ease), background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+}
+.btn:hover, .btn:focus-visible{transform:translateY(-2px);}
+.btn-solid{background:var(--text); color:var(--bg);}
+.btn-solid:hover{background:var(--accent); border-color:var(--accent);}
+.btn-outline{background:transparent; color:var(--text);}
+.btn-outline:hover{border-color:var(--text); background:var(--bg-raised);}
+.btn-ghost{background:transparent; color:var(--text-dim); border-color:transparent;}
+.btn-ghost:hover{color:var(--text); border-color:var(--line-strong);}
+
+.hero-grid{border-top:1px solid var(--line); padding-top:24px;}
+.meta-panel{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:16px 24px;
+  max-width:640px;
+}
+.meta-row{display:flex; flex-direction:column; gap:4px;}
+.meta-row dt{font-size:11px; letter-spacing:.08em; color:var(--text-faint);}
+.meta-row dd{font-size:14px; margin:0;}
