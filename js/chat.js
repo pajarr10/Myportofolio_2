@@ -2,7 +2,7 @@
  * chat.js
  * AI Lab chat UI + logic. Keeps full conversation context in memory
  * for the session (see chatStore.js) so replies stay coherent turn
- * to turn, instead of treatng every message as a fresh question.
+ * to turn, instead of treating every message as a fresh question.
  *
  * The upstream endpoint only accepts a single `text` query param, so
  * we flatten the role-tagged history into one prompt string before
