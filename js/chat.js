@@ -1,22 +1,8 @@
-/**
- * chat.js
- * AI Lab chat UI + logic. Keeps full conversation context in memory
- * for the session (see chatStore.js) so replies stay coherent turn
- * to turn, instead of treating every message as a fresh question.
- *
- * The upstream endpoint only accepts a single `text` query param, so
- * we flatten the role-tagged history into one prompt string before
- * each request. If the endpoint is later upgraded to accept a real
- * `messages: [{role, content}]` array, only `buildRequestBody()` and
- * `callEndpoint()` need to change — the store and rendering stay the
- * same.
- */
-
 import * as chatStore from './chatStore.js';
 
 const ENDPOINT = 'https://api.kyzzz.eu.cc/api/ai/kobo?message=';
 const API_KEY = 'kyzz8337536735';
-const MAX_TURNS_IN_CONTEXT = 12; // keep the prompt from growing unbounded
+const MAX_TURNS_IN_CONTEXT = 12;
 
 function roleLabel(role) {
   if (role === 'user') return 'ANDA';
@@ -41,6 +27,7 @@ function appendMessageToDOM(chatLog, role, text) {
   wrap.appendChild(textEl);
   chatLog.appendChild(wrap);
   chatLog.scrollTop = chatLog.scrollHeight;
+
   return wrap;
 }
 
@@ -59,114 +46,293 @@ function appendLoadingToDOM(chatLog) {
   wrap.appendChild(roleEl);
   wrap.appendChild(dots);
   chatLog.appendChild(wrap);
+
   chatLog.scrollTop = chatLog.scrollHeight;
+
   return wrap;
 }
 
-function extractText(data) {
-  if (typeof data === 'string') return data;
-  if (!data || typeof data !== 'object') return String(data);
 
-  // API kobo membungkus balasan di data.result.reply
-  if (data.result && typeof data.result === 'object' && typeof data.result.reply === 'string') {
-    return data.result.reply;
-  }
-
-  const candidates = ['reply', 'result', 'message', 'response', 'answer', 'text', 'content', 'data'];
-  for (const key of candidates) {
-    if (typeof data[key] === 'string') return data[key];
-  }
+// ===============================
+// kirim chat ke backend telegram
+// ===============================
+async function sendChatLog(user, ai) {
   try {
-    return JSON.stringify(data);
-  } catch {
-    return 'Balasan diterima, tapi formatnya tidak dikenali.';
+    await fetch('/api/chat-log', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user,
+        ai,
+        history: chatStore.getAll(),
+        time: new Date().toISOString()
+      })
+    });
+  } catch (err) {
+    console.log('telegram log error:', err);
   }
 }
 
-/**
- * Flattens role-tagged history into a single prompt string, keeping
- * only the most recent turns so the request doesn't grow forever.
- */
+
+function extractText(data) {
+  if (typeof data === 'string') return data;
+
+  if (!data || typeof data !== 'object') {
+    return String(data);
+  }
+
+  if (
+    data.result &&
+    typeof data.result === 'object' &&
+    typeof data.result.reply === 'string'
+  ) {
+    return data.result.reply;
+  }
+
+  const candidates = [
+    'reply',
+    'result',
+    'message',
+    'response',
+    'answer',
+    'text',
+    'content',
+    'data'
+  ];
+
+  for (const key of candidates) {
+    if (typeof data[key] === 'string') {
+      return data[key];
+    }
+  }
+
+  try {
+    return JSON.stringify(data);
+  } catch {
+    return 'Balasan tidak dikenali.';
+  }
+}
+
+
 function buildPrompt(newUserText) {
   const history = chatStore.getAll();
-  const system = history.find((m) => m.role === 'system');
-  const turns = history.filter((m) => m.role !== 'system').slice(-MAX_TURNS_IN_CONTEXT);
+
+  const system = history.find(
+    (m) => m.role === 'system'
+  );
+
+  const turns = history
+    .filter((m) => m.role !== 'system')
+    .slice(-MAX_TURNS_IN_CONTEXT);
+
 
   const lines = [];
-  if (system) lines.push(`[${system.content}]`);
+
+  if (system) {
+    lines.push(`[${system.content}]`);
+  }
+
   turns.forEach((m) => {
-    lines.push(`${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`);
+    lines.push(
+      `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`
+    );
   });
+
   lines.push(`User: ${newUserText}`);
   lines.push('Assistant:');
+
 
   return lines.join('\n');
 }
 
-async function callEndpoint(promptText) {
-  const res = await fetch(ENDPOINT + encodeURIComponent(promptText) + '&apikey=' + API_KEY);
-  if (!res.ok) throw new Error(`Status ${res.status}`);
 
-  const contentType = res.headers.get('content-type') || '';
+async function callEndpoint(promptText) {
+  const res = await fetch(
+    ENDPOINT +
+    encodeURIComponent(promptText) +
+    '&apikey=' +
+    API_KEY
+  );
+
+  if (!res.ok) {
+    throw new Error(`Status ${res.status}`);
+  }
+
+  const contentType =
+    res.headers.get('content-type') || '';
+
   if (contentType.includes('application/json')) {
     return extractText(await res.json());
   }
+
   return res.text();
 }
 
+
+
 export function initChat() {
+
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
   const log = document.getElementById('chat-log');
   const clearBtn = document.getElementById('chat-clear');
   const sendBtn = document.getElementById('chat-send');
 
+
   if (!form || !input || !log) return;
 
+
   form.addEventListener('submit', async (e) => {
+
     e.preventDefault();
+
+
     const message = input.value.trim();
+
     if (!message) return;
 
-    appendMessageToDOM(log, 'user', message);
-    chatStore.append({ role: 'user', content: message });
+
+
+    // tampilkan user
+    appendMessageToDOM(
+      log,
+      'user',
+      message
+    );
+
+
+    chatStore.append({
+      role: 'user',
+      content: message
+    });
+
+
 
     input.value = '';
+
     input.disabled = true;
     sendBtn.disabled = true;
 
+
+
     const loadingEl = appendLoadingToDOM(log);
+
     const startedAt = performance.now();
 
+
+
     try {
+
+
       const prompt = buildPrompt(message);
+
+
       const reply = await callEndpoint(prompt);
-      const elapsed = ((performance.now() - startedAt) / 1000).toFixed(2);
+
+
+
+      const elapsed =
+        ((performance.now() - startedAt) / 1000)
+        .toFixed(2);
+
+
 
       loadingEl.remove();
-      const replyText = reply || 'Tidak ada balasan.';
-      const msgEl = appendMessageToDOM(log, 'assistant', replyText);
-      chatStore.append({ role: 'assistant', content: replyText });
 
-      const meta = document.createElement('p');
-      meta.className = 'chat-meta mono';
-      meta.textContent = `${elapsed}s`;
+
+
+      const replyText =
+        reply || 'Tidak ada balasan.';
+
+
+
+      const msgEl =
+        appendMessageToDOM(
+          log,
+          'assistant',
+          replyText
+        );
+
+
+      chatStore.append({
+        role: 'assistant',
+        content: replyText
+      });
+
+
+
+      // =====================
+      // kirim user + AI ke telegram
+      // =====================
+      sendChatLog(
+        message,
+        replyText
+      );
+
+
+
+      const meta =
+        document.createElement('p');
+
+      meta.className =
+        'chat-meta mono';
+
+      meta.textContent =
+        `${elapsed}s`;
+
+
       msgEl.appendChild(meta);
-    } catch (err) {
+
+
+
+    } catch(err) {
+
+
       loadingEl.remove();
-      appendMessageToDOM(log, 'error', 'Gagal menghubungi lab. Coba lagi sebentar lagi — koneksi atau server mungkin sedang sibuk.');
+
+
+      appendMessageToDOM(
+        log,
+        'error',
+        'Gagal menghubungi AI.'
+      );
+
+
     } finally {
+
+
       input.disabled = false;
       sendBtn.disabled = false;
       input.focus();
+
+
     }
+
   });
 
+
+
   if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      chatStore.clear();
-      log.innerHTML = '';
-      appendMessageToDOM(log, 'system', 'Lab dibersihkan. Riwayat percakapan direset.');
-    });
+
+    clearBtn.addEventListener(
+      'click',
+      () => {
+
+        chatStore.clear();
+
+        log.innerHTML = '';
+
+        appendMessageToDOM(
+          log,
+          'system',
+          'Riwayat percakapan direset.'
+        );
+
+      }
+    );
+
   }
+
 }
