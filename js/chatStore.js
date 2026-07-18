@@ -1,11 +1,13 @@
 /**
  * chatStore.js
- * Stores AI Lab conversation history.
  */
 
-const SYSTEM_PROMPT = `
-Kamu adalah P4J∆R AI. Jawab seperti teman ngobrol Pajar. Gunakan bahasa Indonesia santai, singkat, dan natural. Jangan mengulang percakapan sebelumnya. Jangan membuat penjelasan panjang kecuali diminta. Jawab hanya sesuai pertanyaan pengguna. Pajar adalah pelajar yang suka coding, AI, web, server, dan teknologi. Jangan menyebut diri sebagai Claude atau AI lain.
-`;
+async function loadPrompt() {
+  const res = await fetch("/prompt.txt");
+  return await res.text();
+}
+
+const SYSTEM_PROMPT = await loadPrompt();
 
 let history = [
   {
