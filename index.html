@@ -425,6 +425,25 @@
           <span class="contact-open mono">Open</span>
         </li>
       </ul>
+      <div class="contact-form-wrap" data-animate="fade-up">
+  <p class="contact-form-tag mono">— OR SEND A NOTE —</p>
+  <form id="contact-form" class="contact-form" novalidate>
+    <label for="contact-name" class="sr-only">Nama</label>
+    <input id="contact-name" name="name" class="contact-form-input" type="text" placeholder="Nama kamu" autocomplete="name" required maxlength="80">
+
+    <label for="contact-email" class="sr-only">Email</label>
+    <input id="contact-email" name="email" class="contact-form-input" type="email" placeholder="Email kamu" autocomplete="email" required maxlength="120">
+
+    <label for="contact-message" class="sr-only">Pesan</label>
+    <textarea id="contact-message" name="message" class="contact-form-input contact-form-textarea" placeholder="Tulis pesan lu di sini..." required maxlength="1000" rows="4"></textarea>
+
+    <button type="submit" class="btn btn-solid contact-form-submit" id="contact-form-submit">
+      <span class="contact-form-submit-label">SEND MESSAGE</span>
+    </button>
+
+    <p id="contact-form-status" class="contact-form-status mono" role="status" aria-live="polite"></p>
+  </form>
+</div>
     </div>
   </section>
 
