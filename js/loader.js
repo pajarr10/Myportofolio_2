@@ -5,7 +5,7 @@
  * necessary, and never blocks at all if the loader markup is absent.
  */
 
-const MIN_DISPLAY_MS = 1000;
+const MIN_DISPLAY_MS = 500;
 
 export function initLoader() {
   const loader = document.getElementById('loader');
