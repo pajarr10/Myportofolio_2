@@ -1,18 +1,62 @@
-/**
- * api/contact.js
- * Vercel Serverless Function.
- *
- * Menerima submit form kontak (nama + pesan, tanpa email) dari
- * website, lalu kirim sebagai notifikasi ke Telegram lewat Bot API.
- * Pakai env var yang sama dengan api/visitor.js — TELEGRAM_BOT_TOKEN
- * dan TELEGRAM_CHAT_ID, sudah diset di Vercel.
- */
-
 function escapeHtml(str = '') {
   return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function parseUserAgent(uaString = '') {
+  let browser = 'Unknown';
+  if (/edg/i.test(uaString)) browser = 'Edge';
+  else if (/opr|opera/i.test(uaString)) browser = 'Opera';
+  else if (/chrome/i.test(uaString) && !/edg/i.test(uaString)) browser = 'Chrome';
+  else if (/firefox/i.test(uaString)) browser = 'Firefox';
+  else if (/safari/i.test(uaString) && !/chrome/i.test(uaString)) browser = 'Safari';
+
+  let os = 'Unknown';
+  if (/windows/i.test(uaString)) os = 'Windows';
+  else if (/android/i.test(uaString)) os = 'Android';
+  else if (/iphone|ipad|ipod/i.test(uaString)) os = 'iOS';
+  else if (/mac os/i.test(uaString)) os = 'macOS';
+  else if (/linux/i.test(uaString)) os = 'Linux';
+
+  let device = 'Desktop';
+  if (/android/i.test(uaString)) device = 'Android';
+  else if (/iphone|ipad|ipod/i.test(uaString)) device = 'iOS';
+  else if (/mobile/i.test(uaString)) device = 'Mobile';
+  else if (/tablet/i.test(uaString)) device = 'Tablet';
+
+  return { browser, os, device };
+}
+
+function getClientIp(req) {
+  const forwardedFor = req.headers['x-forwarded-for'];
+  if (forwardedFor) return forwardedFor.split(',')[0].trim();
+  return req.socket?.remoteAddress || '-';
+}
+
+// Lookup negara/kota dari IP pakai ip-api.com (gratis, tanpa key).
+// Gagal soft — kalau lookup error/limit, field lokasi diisi '-' dan
+// pesan tetap terkirim seperti biasa.
+async function lookupGeo(ip) {
+  const fallback = { country: '-', city: '-' };
+  if (!ip || ip === '-' || ip.startsWith('127.') || ip.startsWith('::1')) {
+    return fallback;
+  }
+  try {
+    const res = await fetch(
+      `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,country,city`
+    );
+    if (!res.ok) return fallback;
+    const data = await res.json();
+    if (data.status !== 'success') return fallback;
+    return {
+      country: data.country || '-',
+      city: data.city || '-',
+    };
+  } catch {
+    return fallback;
+  }
 }
 
 export default async function handler(req, res) {
@@ -35,7 +79,6 @@ export default async function handler(req, res) {
     const email = (body.email || '').trim();
     const message = (body.message || '').trim();
 
-    // Validasi dasar di server — jangan percaya input dari client.
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Nama, email, dan pesan wajib diisi' });
     }
@@ -47,6 +90,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Format email tidak valid' });
     }
 
+    const uaString = req.headers['user-agent'] || '';
+    const { browser, os, device } = parseUserAgent(uaString);
+
+    const ip = getClientIp(req);
+    const { country, city } = await lookupGeo(ip);
+
     const now = new Date();
     const time = new Intl.DateTimeFormat('id-ID', {
       timeZone: 'Asia/Jakarta', day: '2-digit', month: '2-digit', year: 'numeric',
@@ -56,9 +105,15 @@ export default async function handler(req, res) {
     const text = [
       '✉️ <b>PESAN BARU DARI WEBSITE</b>',
       '━━━━━━━━━━━━━━━━━━━━',
-      `👤 <b>Nama</b>    ${escapeHtml(name)}`,
-      `📧 <b>Email</b>    ${escapeHtml(email)}`,
-      `🕒 <b>Waktu</b>    ${escapeHtml(time)} WIB`,
+      `👤 <b>Nama</b>       ${escapeHtml(name)}`,
+      `📧 <b>Email</b>       ${escapeHtml(email)}`,
+      `🕒 <b>Waktu</b>       ${escapeHtml(time)} WIB`,
+      `🌍 <b>Negara</b>     ${escapeHtml(country)}`,
+      `🏙️ <b>Kota</b>           ${escapeHtml(city)}`,
+      `🌐 <b>Browser</b>   ${escapeHtml(browser)}`,
+      `💻 <b>OS</b>            ${escapeHtml(os)}`,
+      `📱 <b>Device</b>    ${escapeHtml(device)}`,
+      `📍 <b>IP</b>            <code>${escapeHtml(ip)}</code>`,
       '',
       `💬 ${escapeHtml(message)}`,
       '━━━━━━━━━━━━━━━━━━━━',
@@ -87,5 +142,4 @@ export default async function handler(req, res) {
     console.error('contact.js error:', err);
     return res.status(500).json({ error: 'Internal error' });
   }
-      }
-  
+}
