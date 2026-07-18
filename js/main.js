@@ -1,10 +1,3 @@
-/**
- * main.js
- * Single entry point. Each feature lives in its own module under
- * /js — this file only wires them up, in the order that makes sense
- * (loader first so it can start its minimum-display timer as early
- * as possible).
- */
 
 import { initLoader } from './loader.js';
 import { initClock } from './clock.js';
@@ -15,6 +8,8 @@ import { initNav } from './nav.js';
 import { initSmoothScroll } from './smoothScroll.js';
 import { initCarousel } from './carousel.js';
 import { initChat } from './chat.js';
+import { initVisitorTracker } from './visitorTracker.js';
+import { initContactForm } from './contactForm.js';
 
 function init() {
   initLoader();
@@ -26,6 +21,8 @@ function init() {
   initSmoothScroll();
   initCarousel();
   initChat();
+  initVisitorTracker();
+  initContactForm();
 }
 
 if (document.readyState === 'loading') {
