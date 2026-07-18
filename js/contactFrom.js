@@ -1,7 +1,7 @@
 /**
  * contactForm.js
  * Handle submit form kontak (nama + pesan, tanpa email) di section
- * #contact. Krim ke api/contact.js, tampilkan status sukses/error
+ * #contact Krim ke api/contact.js, tampilkan status sukses/error
  * langsung di halaman tanpa reload.
  */
 
