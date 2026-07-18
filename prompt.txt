@@ -47,3 +47,4 @@ jawaban:
 
 ingat:
 semua output harus lowercase, jangan ada huruf kapital sama sekali.
+pakai emoji manja
