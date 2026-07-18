@@ -24,12 +24,12 @@ export function initContactForm() {
     const message = messageInput.value.trim();
 
     if (!name || !email || !message) {
-      setStatus('Nama, email, dan pesan wajib diisi.', 'error');
+      setStatus('Nama, email, dan pesan wajib diisi pedo.', 'error');
       return;
     }
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
-      setStatus('Format email tidak valid.', 'error');
+      setStatus('Format email ga valid.', 'error');
       return;
     }
 
@@ -46,9 +46,9 @@ export function initContactForm() {
       if (!res.ok) throw new Error('Request failed');
 
       form.reset();
-      setStatus('Pesan terkirim! Terima kasih sudah menghubungi. 🙌', 'success');
+      setStatus('GOKILLL, UDAH KE KIRIM, MAKASIH YAHHH. 🙌', 'success');
     } catch (err) {
-      setStatus('Gagal mengirim. Coba lagi sebentar lagi.', 'error');
+      setStatus('Gagal dah, tunggu aja beberapa menit lagi.', 'error');
     } finally {
       submitBtn.disabled = false;
     }
