@@ -3,13 +3,12 @@
  * Vercel Serverless Function.
  *
  * Menerima event visitor dari script tracker di website, lalu kirim
- * notifikasi ke Telegram lewat Bot API. Token & chat ID diambil dari
- * environment variables di Vercel — TIDAK pernah ditaruh di kode.
+ * notifikasi lengkap ke Telegram: halaman, waktu, browser, OS,
+ * device, referer, IP, dan lokasi (negara/kota/ISP) hasil lookup IP.
  *
- * Env vars yang harus diset di Vercel (Project Settings → Environment
- * Variables):
- *   TELEGRAM_BOT_TOKEN   -> token dari @BotFather
- *   TELEGRAM_CHAT_ID     -> chat_id kamu (dari @userinfobot, dsb)
+ * Env vars yang harus diset di Vercel:
+ *   TELEGRAM_BOT_TOKEN
+ *   TELEGRAM_CHAT_ID
  */
 
 function escapeHtml(str = '') {
@@ -19,22 +18,59 @@ function escapeHtml(str = '') {
     .replace(/>/g, '&gt;');
 }
 
-// Deteksi browser & device secara kasar dari user-agent string.
-// Tidak butuh library eksternal — cukup untuk keperluan notifikasi.
-function parseUserAgent(ua = '') {
+function parseUserAgent(uaString = '') {
   let browser = 'Unknown';
-  if (/edg/i.test(ua)) browser = 'Edge';
-  else if (/chrome/i.test(ua) && !/edg/i.test(ua)) browser = 'Chrome';
-  else if (/firefox/i.test(ua)) browser = 'Firefox';
-  else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
-  else if (/opr|opera/i.test(ua)) browser = 'Opera';
+  if (/edg/i.test(uaString)) browser = 'Edge';
+  else if (/opr|opera/i.test(uaString)) browser = 'Opera';
+  else if (/chrome/i.test(uaString) && !/edg/i.test(uaString)) browser = 'Chrome';
+  else if (/firefox/i.test(uaString)) browser = 'Firefox';
+  else if (/safari/i.test(uaString) && !/chrome/i.test(uaString)) browser = 'Safari';
+
+  let os = 'Unknown';
+  if (/windows/i.test(uaString)) os = 'Windows';
+  else if (/android/i.test(uaString)) os = 'Android';
+  else if (/iphone|ipad|ipod/i.test(uaString)) os = 'iOS';
+  else if (/mac os/i.test(uaString)) os = 'macOS';
+  else if (/linux/i.test(uaString)) os = 'Linux';
 
   let device = 'Desktop';
-  if (/android/i.test(ua)) device = 'Android';
-  else if (/iphone|ipad|ipod/i.test(ua)) device = 'iOS';
-  else if (/mobile/i.test(ua)) device = 'Mobile';
+  if (/android/i.test(uaString)) device = 'Android';
+  else if (/iphone|ipad|ipod/i.test(uaString)) device = 'iOS';
+  else if (/mobile/i.test(uaString)) device = 'Mobile';
+  else if (/tablet/i.test(uaString)) device = 'Tablet';
 
-  return { browser, device };
+  return { browser, os, device };
+}
+
+function getClientIp(req) {
+  const forwardedFor = req.headers['x-forwarded-for'];
+  if (forwardedFor) return forwardedFor.split(',')[0].trim();
+  return req.socket?.remoteAddress || '-';
+}
+
+// Lookup negara/kota/ISP dari IP pakai ip-api.com (gratis, tanpa key).
+// Gagal soft — kalau lookup error/limit, tetap lanjut kirim notif
+// dengan field lokasi diisi '-', tidak pernah bikin request gagal total.
+async function lookupGeo(ip) {
+  const fallback = { country: '-', city: '-', isp: '-' };
+  if (!ip || ip === '-' || ip.startsWith('127.') || ip.startsWith('::1')) {
+    return fallback;
+  }
+  try {
+    const res = await fetch(
+      `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,country,city,isp`
+    );
+    if (!res.ok) return fallback;
+    const data = await res.json();
+    if (data.status !== 'success') return fallback;
+    return {
+      country: data.country || '-',
+      city: data.city || '-',
+      isp: data.isp || '-',
+    };
+  } catch {
+    return fallback;
+  }
 }
 
 export default async function handler(req, res) {
@@ -55,8 +91,8 @@ export default async function handler(req, res) {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const { page = '/', userAgent = '' } = body;
 
-    const ua = userAgent || req.headers['user-agent'] || '';
-    const { browser, device } = parseUserAgent(ua);
+    const uaString = userAgent || req.headers['user-agent'] || '';
+    const { browser, os, device } = parseUserAgent(uaString);
 
     const now = new Date();
     const time = new Intl.DateTimeFormat('id-ID', {
@@ -64,20 +100,24 @@ export default async function handler(req, res) {
     }).format(now);
 
     const referer = req.headers['referer'] || '-';
-    const forwardedFor = req.headers['x-forwarded-for'];
-    const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : (req.socket?.remoteAddress || '-');
+    const ip = getClientIp(req);
+    const { country, city, isp } = await lookupGeo(ip);
 
     const text = [
       '👀 <b>VISITOR BARU</b>',
       '━━━━━━━━━━━━━━━━━━━━',
-      `📄 <b>Halaman</b>  ${escapeHtml(page)}`,
+      `📄 <b>Halaman</b>   ${escapeHtml(page)}`,
       `🕒 <b>Waktu</b>       ${escapeHtml(time)} WIB`,
       `🌐 <b>Browser</b>   ${escapeHtml(browser)}`,
+      `💻 <b>OS</b>            ${escapeHtml(os)}`,
       `📱 <b>Device</b>    ${escapeHtml(device)}`,
+      `🌍 <b>Negara</b>    ${escapeHtml(country)}`,
+      `🏙️ <b>Kota</b>          ${escapeHtml(city)}`,
+      `📡 <b>ISP</b>           ${escapeHtml(isp)}`,
       `🔗 <b>Referer</b>   ${escapeHtml(referer)}`,
       `📍 <b>IP</b>            <code>${escapeHtml(ip)}</code>`,
       '━━━━━━━━━━━━━━━━━━━━',
-      `<i>pajar.biz.id</i>`,
+      '<i>pajar.biz.id</i>',
     ].join('\n');
 
     const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
