@@ -14,7 +14,8 @@
 
 import * as chatStore from './chatStore.js';
 
-const ENDPOINT = 'https://api.cmnty.web.id/ai/claude?text=';
+const ENDPOINT = 'https://api.kyzzz.eu.cc/api/ai/kobo?message=';
+const API_KEY = 'kyzz8337536735';
 const MAX_TURNS_IN_CONTEXT = 12; // keep the prompt from growing unbounded
 
 function roleLabel(role) {
@@ -97,7 +98,7 @@ function buildPrompt(newUserText) {
 }
 
 async function callEndpoint(promptText) {
-  const res = await fetch(ENDPOINT + encodeURIComponent(promptText));
+  const res = await fetch(ENDPOINT + encodeURIComponent(promptText) + '&apikey=' + API_KEY);
   if (!res.ok) throw new Error(`Status ${res.status}`);
 
   const contentType = res.headers.get('content-type') || '';
