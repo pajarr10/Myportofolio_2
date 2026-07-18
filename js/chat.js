@@ -66,7 +66,13 @@ function appendLoadingToDOM(chatLog) {
 function extractText(data) {
   if (typeof data === 'string') return data;
   if (!data || typeof data !== 'object') return String(data);
-  const candidates = ['result', 'message', 'response', 'answer', 'text', 'content', 'data'];
+
+  // API kobo membungkus balasan di data.result.reply
+  if (data.result && typeof data.result === 'object' && typeof data.result.reply === 'string') {
+    return data.result.reply;
+  }
+
+  const candidates = ['reply', 'result', 'message', 'response', 'answer', 'text', 'content', 'data'];
   for (const key of candidates) {
     if (typeof data[key] === 'string') return data[key];
   }
