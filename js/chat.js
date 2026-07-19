@@ -296,7 +296,7 @@ export function initChat() {
       appendMessageToDOM(
         log,
         'error',
-        'Gagal menghubungi AI.'
+        'Gagal, lagi limit hehe🗿, tunggu besok, sabar'
       );
 
 
