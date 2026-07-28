@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pajar biolink2</title>
+
+  <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lenis CSS untuk Smooth Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css">
+
+  <style>
+    /* ==========================================================================
+       KONTOL LOE ANJG
+       ========================================================================== */
+    :root {
+      --bg: #000000;
+      --card-bg: #000000;
+      --text: #ffffff;
+      --text-dim: #888888;
+      --text-faint: #333333;
+      --line: #181818;
+      --line-strong: #2a2a2a;
+      --accent: #ffffff;
+      --green: #00ff66;
+
+      --font-grotesk: 'Space Grotesk', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* Penyesuaian Lenis Smooth Scroll */
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-grotesk);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem 4rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      /* Background Cyber Grid Pattern */
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       ANIMASI REVEAL 2-ARAH (SCROLL DOWN & SCROLL UP)
+       ========================================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      filter: blur(8px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
+    }
+
+    /* Ketika elemen masuk ke layar */
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+
+    /* Delay Bertingkat (Staggered Jelas) */
+    .delay-1 { transition-delay: 0.08s; }
+    .delay-2 { transition-delay: 0.16s; }
+    .delay-3 { transition-delay: 0.24s; }
+    .delay-4 { transition-delay: 0.32s; }
+    .delay-5 { transition-delay: 0.40s; }
+    .delay-6 { transition-delay: 0.48s; }
+    .delay-7 { transition-delay: 0.56s; }
+    .delay-8 { transition-delay: 0.64s; }
+
+    /* ==========================================================================
+       LIVE SYSTEM TICKER BAR (TAMBAHAN RAME)
+       ========================================================================== */
+    .system-ticker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #000000;
+      border: 1px solid var(--line-strong);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .ticker-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* ==========================================================================
+       TOP ACTION BUTTONS (DONATE & FEEDBACK - LANCIP TAJAM)
+       ========================================================================== */
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .top-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #000000;
+      border: 1px solid var(--line-strong);
+      border-radius: 0px; /* Lancip tajam */
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.35s ease;
+      position: relative;
+    }
+
+    .top-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke: var(--text-dim);
+      transition: stroke 0.35s ease, transform 0.35s ease;
+    }
+
+    .top-btn:hover {
+      background-color: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.12);
+    }
+
+    .top-btn:hover svg {
+      stroke: #000000;
+      transform: scale(1.15);
+    }
+
+    /* ==========================================================================
+       HEADER CARD & PROFILE
+       ========================================================================== */
+    .header-card {
+      background-color: #000000;
+      border: 1px solid var(--line-strong);
+      border-radius: 0px;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .header-card::before {
+      content: "FILE 001 // PROFIL";
+      position: absolute;
+      top: 10px;
+      left: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      letter-spacing: 0.15em;
+    }
+
+    .header-card::after {
+      content: "VER 2.0.46";
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      letter-spacing: 0.15em;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0.5rem auto 1.25rem;
+      border-radius: 50%;
+      padding: 2px;
+      background: #111111;
+      border: 1px solid #333333;
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      filter: grayscale(15%);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .avatar-wrapper:hover .avatar {
+      filter: grayscale(0%);
+      transform: scale(1.04);
+    }
+
+    .profile-name {
+      font-family: var(--font-grotesk);
+      font-size: 2.3rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .profile-tagline {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      max-width: 480px;
+      margin: 0 auto 1.25rem;
+      font-weight: 300;
+    }
+
+    .profile-tagline span {
+      color: var(--green);
+      margin-right: 4px;
+    }
+
+    /* Tech Stack Badges (Rame) */
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 0.75rem;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      background-color: #050505;
+      border: 1px solid var(--line);
+      padding: 2px 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       SECTION HEADER
+       ========================================================================== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding: 0 2px;
+    }
+
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+    }
+
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+    }
+
+    /* ==========================================================================
+       CONTACT LIST (GRID BRUTALIST LANCIP)
+       ========================================================================== */
+    .contact-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: #000000;
+      border: 1px solid var(--line);
+      border-radius: 0px; /* Lancip tajam */
+      padding: 1.3rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .contact-card:hover {
+      border-color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.08);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-index {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      letter-spacing: 0.05em;
+    }
+
+    .open-badge {
+      font-family: var(--font-mono);
+      font-size: 0.63rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      border: 1px solid var(--line-strong);
+      border-radius: 0px;
+      padding: 2px 7px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contact-card:hover .open-badge {
+      color: #000000;
+      background-color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    .card-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .card-label {
+      font-family: var(--font-grotesk);
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-label svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      color: var(--text-dim);
+      transition: color 0.35s ease;
+    }
+
+    .contact-card:hover .card-label svg {
+      color: #ffffff;
+    }
+
+    .card-value {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: var(--text-dim);
+      word-break: break-all;
+    }
+
+    /* ==========================================================================
+       EXTRA INTERACTIVE WIDGETS (RAME)
+       ========================================================================== */
+    .extra-widgets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .widget-box {
+      background-color: #000000;
+      border: 1px solid var(--line);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    .widget-title {
+      color: var(--text-faint);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.65rem;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--line-strong);
+      color: var(--text);
+      padding: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .copy-btn:hover {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: #ffffff;
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 0px;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+      letter-spacing: 0.05em;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer {
+      text-align: center;
+      border-top: 1px solid var(--line);
+      padding-top: 2rem;
+      width: 100%;
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN (MOBILE)
+       ========================================================================== */
+    @media (max-width: 767px) {
+      body {
+        padding: 1.25rem 0.75rem 3rem;
+      }
+
+      .contact-list, .extra-widgets {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .contact-card {
+        padding: 1.1rem 1.15rem;
+      }
+
+      .profile-name {
+        font-size: 1.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification -->
+  <div id="toast">EMAIL TELAH DISALIN!</div>
+
+  <main class="container">
+    
+    <!-- System Ticker Live Bar -->
+    <div class="system-ticker reveal delay-1">
+      <div class="ticker-left">
+        <span class="pulse-dot"></span>
+        <span>SYSTEM_READY // IDN_WIB</span>
+      </div>
+      <div id="clock">00:00:00 WIB</div>
+    </div>
+
+    <!-- 2 Tombol Kecil di Atas -->
+    <div class="top-actions reveal delay-2">
+      <a href="https://saweria.co/pajardong" target="_blank" rel="noopener noreferrer" class="top-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        DONATE
+      </a>
+      <a href="https://pajar.biz.id/#my-contact" target="_blank" rel="noopener noreferrer" class="top-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        FEEDBACK
+      </a>
+    </div>
+
+    <!-- Header / Profil -->
+    <header class="header-card reveal delay-3">
+      <div class="avatar-wrapper">
+        <img 
+          src="https://autoresbot.com/tmp_files/94da5a688bd4d7aba4545f563db37c4a.jpg" 
+          alt="apasie loe jig" 
+          class="avatar"
+          onerror="this.src='https://via.placeholder.com/150/000000/FFFFFF?text=PAJAR'"
+        >
+      </div>
+      <h1 class="profile-name">Pajar</h1>
+      <p class="profile-tagline">
+        <span>&gt;</span> selamat datang di bio link gua cuyy, link link gw ada dibawah
+      </p>
+
+      <!-- Tech Stack Badges (Rame) -->
+      <div class="tech-badges">
+        <span class="badge">NPM</span>
+        <span class="badge">JAVASCRIPT</span>
+        <span class="badge">CYBERSEC</span>
+        <span class="badge">SQLite</span>
+        <span class="badge">PYTHON</span>
+        <span class="badge">LARPER</span>
+      </div>
+    </header>
+
+    <!-- Header Section Links -->
+    <div class="section-header reveal delay-4">
+      <span class="section-title">002 // Tautan Resmi</span>
+      <span class="section-count">[06 LINKS]</span>
+    </div>
+
+    <!-- Grid Link / Kontak -->
+    <section class="contact-list">
+
+      <!-- Item 01: Web Portofolio -->
+      <a href="https://pajar.biz.id" target="_blank" rel="noopener noreferrer" class="contact-card reveal delay-1">
+        <div class="card-top">
+          <span class="card-index">01 / LINK</span>
+          <span class="open-badge">
+            OPEN 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            Web Portofolio
+          </div>
+          <span class="card-value">pajar.biz.id</span>
+        </div>
+      </a>
+
+      <!-- Item 02: Web Portofolio Kamera -->
+      <a href="https://pixajar.my.id" target="_blank" rel="noopener noreferrer" class="contact-card reveal delay-2">
+        <div class="card-top">
+          <span class="card-index">02 / LINK</span>
+          <span class="open-badge">
+            OPEN 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            Web Portofolio
+          </div>
+          <span class="card-value">pixajar.my.id</span>
+        </div>
+      </a>
+
+      <!-- Item 03: Instagram -->
+      <a href="https://instagram.com/snapshot.by.jare" target="_blank" rel="noopener noreferrer" class="contact-card reveal delay-3">
+        <div class="card-top">
+          <span class="card-index">03 / SOCIAL</span>
+          <span class="open-badge">
+            OPEN 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            Instagram
+          </div>
+          <span class="card-value">@snapshot.by.jare</span>
+        </div>
+      </a>
+
+      <!-- Item 04: TikTok -->
+                <a href="https://tiktok.com/@whydoikeepwak1ngup67" target="_blank" rel="noopener noreferrer" class="contact-card reveal delay-4">
+        <div class="card-top">
+          <span class="card-index">04 / SOCIAL</span>
+          <span class="open-badge">
+            OPEN 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+            TikTok
+          </div>
+          <span class="card-value">@whydoikeepwak1ngup67</span>
+        </div>
+      </a>
+
+      <!-- Item 05: GitHub -->
+      <a href="https://github.com/pajarr10" target="_blank" rel="noopener noreferrer" class="contact-card reveal delay-5">
+        <div class="card-top">
+          <span class="card-index">05 / CODE</span>
+          <span class="open-badge">
+            OPEN 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            GitHub
+          </div>
+          <span class="card-value">pajarr10</span>
+        </div>
+      </a>
+
+      <!-- Item 06: Email -->
+      <a href="mailto:fajaarr1001@gmail.com" class="contact-card reveal delay-6">
+        <div class="card-top">
+          <span class="card-index">06 / MAIL</span>
+          <span class="open-badge">
+            OPEN 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-label">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            Email
+          </div>
+          <span class="card-value">fajaarr1001@gmail.com</span>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- Extra Widgets Interaktif (Rame) -->
+    <div class="extra-widgets">
+      <div class="widget-box reveal delay-7">
+        <span class="widget-title">QUICK_COPY // EMAIL</span>
+        <button class="copy-btn" onclick="copyEmail()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          SALIN EMAIL
+        </button>
+      </div>
+      <div class="widget-box reveal delay-8">
+        <span class="widget-title">STATUS // LOCATION</span>
+        <span style="color: var(--text);">INDONESIA (WIB)</span>
+      </div>
+    </div>
+
+    <!-- Footer Minimalis -->
+    <footer class="reveal delay-8">
+      <p class="footer-text">&copy; <span id="year">2026</span> PAJAR. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+  </main>
+
+  <!-- Pustaka Smooth Scroll Lenis JS -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <script>
+    // 1. Live Clock & Tahun Automatic
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds} WIB`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. Salin Email Function
+    function copyEmail() {
+      const email = 'fajaarr1001@gmail.com';
+      const input = document.createElement('input');
+      input.value = email;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // 3. Smooth Scroll Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      lerp: 0.08,
+      smoothWheel: true,
+      smoothTouch: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 4. ANIMASI 2-ARAH (SCROLL DOWN & SCROLL UP)
+    // Menggunakan IntersectionObserver tanpa unobserve agar bereaksi terus saat scroll ke atas maupun ke bawah
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -10px 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Ketika masuk area layar (scroll bawah ATAU scroll atas)
+          entry.target.classList.add('active');
+        } else {
+          // Ketika keluar area layar, reset kembali agar bisa teranimasi ulang saat scroll atas
+          entry.target.classList.remove('active');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(element => {
+      observer.observe(element);
+    });
+  </script>
+</body>
+  </html>
