@@ -3,142 +3,272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>404</title>
+<meta name="theme-color" content="#0a0a0b">
+<title>404 — Halamannya Ilang / P4J∆R</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-* {
-    box-sizing: border-box;
+:root{
+  --bg:#0a0a0b;
+  --bg-raised:#111113;
+  --panel:#141416;
+  --line:rgba(236,236,236,.10);
+  --line-strong:rgba(236,236,236,.20);
+  --text:#ECECEC;
+  --text-soft:#EAEAEA;
+  --text-mid:#9E9E9E;
+  --text-dim:#96969b;
+  --text-faint:#5c5c61;
+  --accent:#e7b34d;
+  --signal:#7fdc8f;
+  --danger:#ff6b5e;
+
+  --radius-sm:2px;
+
+  --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --display:'Archivo Black', 'Arial Black', sans-serif;
+  --body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --dur:.3s;
+  --dur-slow:.7s;
+  --ease:cubic-bezier(.22,.68,0,1);
+
+  --wrap:1180px;
+  --gutter:clamp(20px, 5vw, 64px);
 }
 
-body {
-    margin: 0;
-    height: 100vh;
-    color: white;
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+*,*::before,*::after{box-sizing:border-box;}
+html,body{height:100%; margin:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+a{color:inherit; text-decoration:none;}
+::selection{background:var(--accent); color:#0a0a0b;}
+.wrap{max-width:var(--wrap); margin-inline:auto; padding-inline:var(--gutter);}
 
-    background:
-        linear-gradient(
-            rgba(0,0,0,.75),
-            rgba(0,0,0,.75)
-        ),
-        url("https://c.termai.cc/i165/DxDc.jpg");
-
-    background-size: cover;
-    background-position: center;
+.noise{
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.035; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grid-overlay{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 0%, black, transparent 75%);
+  opacity:.15;
 }
 
-.back-real {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: rgba(255,255,255,0.08);
-    color: white;
-    padding: 10px 18px;
-    border-radius: 14px;
-    text-decoration: none;
-    font-size: 14px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: .2s;
+.site-header{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:blur(10px);
+  background:rgba(10,10,11,.75);
+  border-bottom:1px solid var(--line);
+}
+.header-row{display:flex; align-items:center; justify-content:space-between; height:56px;}
+.brand{display:flex; align-items:center; gap:8px;}
+.brand-mark{
+  width:26px; height:26px; display:grid; place-items:center;
+  border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+}
+.brand-name{font-family:var(--mono); font-weight:600; letter-spacing:.04em; font-size:14px;}
+.header-meta{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-dim);}
+.header-meta .dot{width:6px; height:6px; border-radius:50%; background:var(--danger); box-shadow:0 0 8px var(--danger);}
+.meta-sep{color:var(--text-faint);}
+.mono{font-family:var(--mono);}
+
+main{position:relative; z-index:1; flex:1; display:flex;}
+
+.error-section{
+  flex:1; display:flex; align-items:center; justify-content:center;
+  padding:80px var(--gutter); text-align:center;
+}
+.error-wrap{width:100%; max-width:680px; display:flex; flex-direction:column; align-items:center;}
+
+.file-tag{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.14em;
+  color:var(--text-faint); text-transform:uppercase;
+  margin:0 0 28px;
+}
+.file-tag .status-dot{width:6px; height:6px; border-radius:50%; background:var(--danger); box-shadow:0 0 0 3px rgba(255,107,94,.15);}
+
+.error-code{
+  font-family:var(--display);
+  font-size:clamp(88px, 18vw, 180px);
+  line-height:.88;
+  letter-spacing:-.01em;
+  margin:0 0 8px;
+  color:var(--text-soft);
 }
 
-.back-real:hover {
-    background: rgba(255,255,255,0.15);
+.error-title{
+  font-family:var(--display);
+  font-size:clamp(20px, 3vw, 32px);
+  letter-spacing:-.01em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 22px;
 }
 
-.container {
-    text-align: center;
-    animation: pop .6s ease;
+.error-message{
+  max-width:48ch;
+  font-size:clamp(15px,2vw,17px);
+  color:var(--text-dim);
+  line-height:1.75;
+  margin:0 0 8px;
 }
 
-h1 {
-    font-size: 100px;
-    margin: 0;
-    font-weight: 900;
-    letter-spacing: -6px;
+.error-submessage{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text-faint);
+  margin:0 0 36px;
 }
 
-p {
-    font-size: 22px;
-    line-height: 1.5;
-    color: #aaa;
-    margin: 10px 0 25px;
-    font-weight: 700;
+.current-line{
+  font-family:var(--mono); font-size:13px; color:var(--text-faint);
+  margin:0 0 36px; display:flex; align-items:baseline; gap:8px;
+}
+.current-line .caret{color:var(--accent); animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+.error-actions{display:flex; flex-wrap:wrap; gap:12px; justify-content:center;}
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 22px; font-family:var(--mono); font-size:13px; letter-spacing:.04em;
+  border-radius:var(--radius-sm); border:1px solid var(--line-strong);
+  transition:transform var(--dur) var(--ease), background var(--dur), border-color var(--dur), color var(--dur);
+}
+.btn:hover, .btn:focus-visible{transform:translateY(-2px);}
+.btn-solid{background:var(--text); color:var(--bg);}
+.btn-solid:hover{background:var(--accent); border-color:var(--accent);}
+.btn-outline{background:transparent; color:var(--text);}
+.btn-outline:hover{border-color:var(--text); background:var(--bg-raised);}
+
+.reroll{
+  margin-top:20px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+  color:var(--text-faint);
+  text-transform:uppercase;
+  border-bottom:1px dashed var(--line-strong);
+  padding-bottom:2px;
+}
+.reroll:hover{color:var(--accent); border-color:var(--accent);}
+
+.reveal{opacity:0; transform:translateY(16px); transition:opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); transition-delay:var(--d,0ms);}
+.reveal.in-view{opacity:1; transform:none;}
+@media (prefers-reduced-motion: reduce){
+  .reveal{transition:none !important; opacity:1 !important; transform:none !important;}
+  .current-line .caret{animation:none;}
 }
 
-img {
-    width: 260px;
-    max-width: 80%;
-    border-radius: 22px;
-    box-shadow: 0 20px 50px rgba(0,0,0,.5);
-}
+.site-footer{border-top:1px solid var(--line); padding:40px 0 24px; background:var(--bg-raised); position:relative; z-index:1;}
+.footer-bottom p{font-size:12px; color:var(--text-faint); margin:0;}
 
-button {
-    margin-top: 28px;
-    padding: 13px 32px;
-    border: none;
-    border-radius: 14px;
-    background: white;
-    color: black;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: .2s;
-}
-
-button:hover {
-    transform: scale(1.06);
-}
-
-@keyframes pop {
-    from {
-        opacity: 0;
-        transform: scale(.85);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+@media (max-width:480px){
+  .error-actions{flex-direction:column; width:100%;}
+  .btn{justify-content:center; width:100%;}
+  .error-section{padding:56px 20px;}
 }
 </style>
-
 </head>
-
 <body>
+    <div class="noise"></div>
+    <div class="grid-overlay"></div>
 
-<a class="back-real" href="/">
-    ← bek
-</a>
+    <header class="site-header">
+      <div class="wrap header-row">
+        <a href="https://pajar.biz.id" class="brand" aria-label="P4J∆R — beranda">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 3H18V6H8V11H16V14H8V21H4V3Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="brand-name">P4J∆R</span>
+        </a>
+        <div class="header-meta">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="mono">404</span>
+          <span class="meta-sep">/</span>
+          <span class="mono">NOT&nbsp;FOUND</span>
+        </div>
+      </div>
+    </header>
 
-<div class="container">
+    <main>
+      <section class="error-section">
+        <div class="error-wrap">
+          <p class="file-tag reveal" style="--d:0ms"><span class="status-dot"></span>FILE 404 — GAADA WOI</p>
+          <h1 class="error-code reveal" style="--d:80ms">404</h1>
+          <p class="error-title reveal" id="joke-title" style="--d:160ms">Goblok, Gaada Halamannya, Tolol</p>
+          <p class="error-message reveal" id="joke-message" style="--d:220ms">Serius deh salah ketik atau linknya emang udah dihapus. Cek lagi URL-nya, jangan asal pencet.</p>
+          <p class="error-submessage reveal" style="--d:260ms">nb: bukan situs yang error, otak lo yang perlu di-debug</p>
+          <p class="current-line reveal" style="--d:300ms">nyari-nyari halaman yang emang gaada..<span class="caret">_</span></p>
+          <div class="error-actions reveal" style="--d:360ms">
+            <a href="https://pajar.biz.id" class="btn btn-solid">BALIK KE BERANDA, GOBLOK</a>
+            <a href="javascript:history.back()" class="btn btn-outline">MUNDUR AJA LAH</a>
+          </div>
+          <button type="button" class="reroll reveal" id="reroll-btn" style="--d:400ms">— ganti hinaan —</button>
+        </div>
+      </section>
+    </main>
 
-    <h1>404</h1>
+    <footer class="site-footer">
+      <div class="wrap footer-bottom">
+        <p>© MUHAMMAD FAJAR / 2026 / IDN — <span class="mono">STATUS: HALAMAN GHOSTING</span></p>
+      </div>
+    </footer>
 
-    <p>
-        wahhh<br>
-        si bro ngapain?🗿😈
-    </p>
+    <script>
+      const jokes = [
+        { title: "Goblok, Gaada Halamannya, Tolol", msg: "Serius deh salah ketik atau linknya emang udah dihapus. Cek lagi URL-nya, jangan asal pencet." },
+        { title: "Anjay Nyasar Lu", msg: "Halaman yang lo cari udah kabur duluan. Mungkin capek ditinggal maintenance." },
+        { title: "Woy Salah Alamat", msg: "Ini bukan Google, ngasal amat ngetik URL-nya. Coba cek lagi deh, pelan-pelan." },
+        { title: "404, Sama Kayak Nasib", msg: "Halamannya gaada, sama kayak progress belajar gw kalo lagi males." },
+        { title: "Kosong Bang, Kayak Dompet", msg: "Server udah dicek, emang gaada apa-apa di sini. Balik aja lah daripada bengong." },
+        { title: "Lu Ngapain ke Sini", msg: "Link ini emang gaada, atau emang lo yang salah ketik URL-nya. Coba dicek lagi." }
+      ];
 
-    <img src="https://c.termai.cc/i165/DxDc.jpg">
+      const titleEl = document.getElementById('joke-title');
+      const msgEl = document.getElementById('joke-message');
+      const rerollBtn = document.getElementById('reroll-btn');
 
-    <br>
+      function pickRandom(exclude){
+        let pool = jokes;
+        if(exclude) pool = jokes.filter(j => j.title !== exclude);
+        return pool[Math.floor(Math.random() * pool.length)];
+      }
 
-    <button onclick="location.href='https://hellocloud.my.id'">
-        ← back
-    </button>
+      let current = pickRandom();
+      titleEl.textContent = current.title;
+      msgEl.textContent = current.msg;
 
-</div>
+      rerollBtn.addEventListener('click', () => {
+        current = pickRandom(current.title);
+        titleEl.style.opacity = 0;
+        msgEl.style.opacity = 0;
+        setTimeout(() => {
+          titleEl.textContent = current.title;
+          msgEl.textContent = current.msg;
+          titleEl.style.opacity = 1;
+          msgEl.style.opacity = 1;
+        }, 200);
+      });
 
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.reveal').forEach(el => {
+          requestAnimationFrame(() => el.classList.add('in-view'));
+        });
+      });
+    </script>
 </body>
 </html>
