@@ -1,7 +1,7 @@
 import * as chatStore from './chatStore.js';
 
-const ENDPOINT = 'https://api.kyzzz.eu.cc/api/ai/kobo?message=';
-const API_KEY = 'kyzz535299320654';
+const ENDPOINT = 'https://api.kyzzz.xyz/api/ai/kobo?message=';
+const API_KEY = 'kyzz8337536735';
 const MAX_TURNS_IN_CONTEXT = 12;
 
 function roleLabel(role) {
